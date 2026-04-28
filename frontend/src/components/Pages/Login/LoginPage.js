@@ -12,6 +12,7 @@ import eyeClosedIcon from "../../../assets/hide.svg";
 import eyeOpenIcon from "../../../assets/open.svg";
 import styles from "./LoginPage.module.css";
 
+// Testing CI/CD
 const LoginPage = () => {
   const [form, setForm] = useState({
     identifier: "",
