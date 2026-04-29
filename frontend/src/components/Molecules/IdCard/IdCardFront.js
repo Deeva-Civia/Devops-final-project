@@ -112,8 +112,6 @@ const IdCardFront = ({
   const currentConfig = config[variant] || config.ecp;
   const hasLastName = last_name && last_name.trim() !== '' && last_name !== '-';
 
-  const isBase64 = photo_url && photo_url.startsWith('data:');
-
   return (
     <div
       className={`${styles.idCardBase} ${currentConfig.styleClass}`}

@@ -53,7 +53,6 @@ const IdCardPopup = ({ isOpen, onClose, studentData, onSaveSuccess }) => {
   const [currentView, setCurrentView] = useState('front');
 
   const [cardData, setCardData] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [idCardNumber, setIdCardNumber] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccessNotify, setShowSuccessNotify] = useState(false);
@@ -64,7 +63,6 @@ const IdCardPopup = ({ isOpen, onClose, studentData, onSaveSuccess }) => {
 
   useEffect(() => {
     if (isOpen && studentData?.id) {
-      setLoading(true);
       setExportError('');
       setShowSuccessNotify(false);
       setPhotoPosition({ x: 0, y: 0 });
@@ -82,7 +80,6 @@ const IdCardPopup = ({ isOpen, onClose, studentData, onSaveSuccess }) => {
           console.error('Failed to fetch ID Card info', err);
         })
         .finally(() => {
-          setLoading(false);
         });
     } else {
       setCardData(null);
@@ -124,40 +121,6 @@ const IdCardPopup = ({ isOpen, onClose, studentData, onSaveSuccess }) => {
 
   const toggleView = () => {
     setCurrentView((prev) => (prev === 'front' ? 'back' : 'front'));
-  };
-
-  const convertUrlToPngBase64 = (url) => {
-    return new Promise((resolve) => {
-      if (!url) {
-        resolve(null);
-        return;
-      }
-      const img = new Image();
-      img.crossOrigin = 'Anonymous';
-
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        try {
-          const dataURL = canvas.toDataURL('image/png');
-          resolve(dataURL);
-        } catch (e) {
-          console.error('Canvas export failed (CORS/Taint):', e);
-
-          resolve(url);
-        }
-      };
-
-      img.onerror = (err) => {
-        console.error('Image load failed inside export logic:', err);
-        resolve(url);
-      };
-
-      img.src = url;
-    });
   };
 
   const handleExport = async () => {

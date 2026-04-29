@@ -41,9 +41,6 @@ const StudentProfileHeader = ({
   const [isIdCardPopupOpen, setIdCardPopupOpen] = useState(false);
   const [isStatusDropdownOpen, setStatusDropdownOpen] = useState(false);
 
-  const hasPreview = !!photoPreview;
-  const hasFormDataUrl = !!(formData && formData.photo_url);
-
   const displayPhotoUrl = useMemo(() => {
       if (isEditing && photoPreview) {
           return photoPreview;
@@ -56,8 +53,6 @@ const StudentProfileHeader = ({
       return placeholder;
   }, [isEditing, photoPreview, formData?.photo_url]);
 
-  const imageUrl =
-    photoPreview || (formData && formData.photo_url) || placeholder;
   const imageClass =
     displayPhotoUrl !== placeholder
       ? styles.profileImage
