@@ -692,10 +692,15 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         }
 
         XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapan Pendaftaran");
-        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const excelBuffer = XLSX.write(workbook, { 
+            bookType: "xlsx", 
+            type: "array",
+            cellStyles: true, 
+            bookSST: false 
+        });
 
         const dataBlob = new Blob([excelBuffer], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         });
 
         const downloadLink = document.createElement("a");
@@ -722,10 +727,16 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         XLSX.utils.book_append_sheet(workbook, worksheet, `Data ${index + 1}`);
     });
 
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(workbook, { 
+        bookType: "xlsx", 
+        type: "array",
+        cellStyles: true, 
+        bookSST: false 
+    });
 
+    // 2. MIME type disederhanakan tanpa charset (Excel kadang bingung dengan parameter charset tambahan pada file ZIP/XLSX)
     const dataBlob = new Blob([excelBuffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     });
 
     const downloadLink = document.createElement("a");
