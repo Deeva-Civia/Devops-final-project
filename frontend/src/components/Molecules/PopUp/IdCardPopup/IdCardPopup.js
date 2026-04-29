@@ -71,7 +71,12 @@ const IdCardPopup = ({ isOpen, onClose, studentData, onSaveSuccess }) => {
       getStudentLatestApplication(studentData.id, 'registration')
         .then((res) => {
           if (res?.success && res?.data?.idCardInfo) {
-            const info = res.data.idCardInfo;
+            let info = res.data.idCardInfo;
+
+            if (info.photo_url) {
+                info.photo_url = info.photo_url.replace(/\/storage-file\/(?:backend\/storage\/|storage\/|public\/)+/g, '/storage-file/');
+            }
+            
             setCardData(info);
             setIdCardNumber(info.card_number || '');
           }

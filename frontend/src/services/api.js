@@ -512,6 +512,8 @@ export const fetchAuthenticatedImage = async (url) => {
     return url;
   }
 
+  let cleanUrl = url.replace(/\/storage-file\/(?:backend\/storage\/|storage\/|public\/)+/g, '/storage-file/');
+
   const token = localStorage.getItem('token');
   const headers = {};
   if (token) {
@@ -519,7 +521,7 @@ export const fetchAuthenticatedImage = async (url) => {
   }
 
   try {
-    const response = await fetch(url, { headers });
+    const response = await fetch(cleanUrl, { headers });
     if (!response.ok) throw new Error('Failed to load image');
 
     const blob = await response.blob();

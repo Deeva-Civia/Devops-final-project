@@ -102,7 +102,14 @@ const StudentList = () => {
         };
 
         const res = await getStudents(allParams);
-        const data = res.data?.data || [];
+        let data = res.data?.data || [];
+        data = data.map(student => {
+          let cleanPhoto = student.photo_url;
+          if (cleanPhoto) {
+             cleanPhoto = cleanPhoto.replace(/\/storage-file\/(?:backend\/storage\/|storage\/|public\/)+/g, '/storage-file/');
+          }
+          return { ...student, photo_url: cleanPhoto };
+        });
         setStudentData(data);
         setTotalPages(res.data?.last_page || 1);
         setCurrentPage(res.data?.current_page || 1);
