@@ -692,22 +692,32 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         }
 
         XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapan Pendaftaran");
-        const excelBase64 = XLSX.write(workbook, { 
-            bookType: "xlsx", 
-            type: "base64", 
-            cellStyles: true, 
-            bookSST: false 
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+            cellStyles: true,
+            bookSST: false
         });
 
+        const blob = new Blob(
+            [excelBuffer],
+            {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            }
+        );
+
+        const url = window.URL.createObjectURL(blob);
         const downloadLink = document.createElement("a");
-        downloadLink.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + excelBase64;
+
+        downloadLink.href = url;
         downloadLink.download = fileName;
-        
+
         document.body.appendChild(downloadLink);
         downloadLink.click();
-        
+
         setTimeout(() => {
             document.body.removeChild(downloadLink);
+            window.URL.revokeObjectURL(url);
         }, 100);
         return;
     }
@@ -720,21 +730,31 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         XLSX.utils.book_append_sheet(workbook, worksheet, `Data ${index + 1}`);
     });
 
-    const excelBase64 = XLSX.write(workbook, { 
-        bookType: "xlsx", 
-        type: "base64", 
-        cellStyles: true, 
-        bookSST: false 
+    const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+        cellStyles: true,
+        bookSST: false
     });
 
+    const blob = new Blob(
+        [excelBuffer],
+        {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        }
+    );
+
+    const url = window.URL.createObjectURL(blob);
     const downloadLink = document.createElement("a");
-    downloadLink.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + excelBase64;
+
+    downloadLink.href = url;
     downloadLink.download = fileName;
-    
+
     document.body.appendChild(downloadLink);
     downloadLink.click();
-    
+
     setTimeout(() => {
         document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
     }, 100);
 };
