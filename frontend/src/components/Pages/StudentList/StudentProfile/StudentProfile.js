@@ -1072,7 +1072,7 @@ const StudentProfile = () => {
       let finalPhotoUrl = updatedRequestData.photo_url;
       if (finalPhotoUrl && !finalPhotoUrl.startsWith('http')) {
         const apiBase = process.env.REACT_APP_API_URL.replace(/\/$/, ''); 
-        const cleanPath = finalPhotoUrl.replace(/^(public\/|storage\/)/, '');
+        const cleanPath = finalPhotoUrl.replace(/^.*?(storage\/|public\/)/, '');
         finalPhotoUrl = `${apiBase}/storage-file/${cleanPath}`;
       }
 
