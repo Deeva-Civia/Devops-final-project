@@ -692,7 +692,25 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         }
 
         XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapan Pendaftaran");
-        XLSX.writeFile(workbook, fileName);
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+        const dataBlob = new Blob([excelBuffer], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+        });
+
+        const downloadLink = document.createElement("a");
+        const url = URL.createObjectURL(dataBlob);
+        
+        downloadLink.href = url;
+        downloadLink.download = fileName;
+        
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+        }, 100);
         return;
     }
 
@@ -704,5 +722,23 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         XLSX.utils.book_append_sheet(workbook, worksheet, `Data ${index + 1}`);
     });
 
-    XLSX.writeFile(workbook, fileName);
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+    const dataBlob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+    });
+
+    const downloadLink = document.createElement("a");
+    const url = URL.createObjectURL(dataBlob);
+    
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    
+    setTimeout(() => {
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+    }, 100);
 };
