@@ -1070,10 +1070,10 @@ const StudentProfile = () => {
       const preservedIdCardInfo = studentData?.idCardInfo || null;
 
       let finalPhotoUrl = updatedRequestData.photo_url;
-      if (finalPhotoUrl && !finalPhotoUrl.includes('api/storage-file')) {
-        const pathOnly = finalPhotoUrl.replace(/^.*storage\//, ''); 
+      if (finalPhotoUrl && !finalPhotoUrl.startsWith('http')) {
         const apiBase = process.env.REACT_APP_API_URL.replace(/\/$/, ''); 
-        finalPhotoUrl = `${apiBase}/storage-file/${pathOnly}`;
+        const cleanPath = finalPhotoUrl.replace(/^(public\/|storage\/)/, '');
+        finalPhotoUrl = `${apiBase}/storage-file/${cleanPath}`;
       }
 
       if (finalPhotoUrl) {
