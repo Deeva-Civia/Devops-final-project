@@ -1036,6 +1036,7 @@ const StudentProfile = () => {
 
   const handleConfirmUpdate = async () => {
     setIsUpdating(true);
+    
     const dataToSend = { ...formData, ...studentInfo };
 
     if (selectedPhoto) {
@@ -1044,7 +1045,6 @@ const StudentProfile = () => {
 
     if (dataToSend.discount_name && options?.discount_types) {
       const val = dataToSend.discount_name;
-
       const foundDiscount = options.discount_types.find(
         (d) => d.name === val || String(d.discount_type_id) === String(val)
       );
