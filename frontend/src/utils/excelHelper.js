@@ -692,21 +692,15 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         }
 
         XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapan Pendaftaran");
-        const excelBuffer = XLSX.write(workbook, { 
+        const excelBase64 = XLSX.write(workbook, { 
             bookType: "xlsx", 
-            type: "array",
+            type: "base64", 
             cellStyles: true, 
             bookSST: false 
         });
 
-        const dataBlob = new Blob([excelBuffer], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        });
-
         const downloadLink = document.createElement("a");
-        const url = URL.createObjectURL(dataBlob);
-        
-        downloadLink.href = url;
+        downloadLink.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + excelBase64;
         downloadLink.download = fileName;
         
         document.body.appendChild(downloadLink);
@@ -714,7 +708,6 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         
         setTimeout(() => {
             document.body.removeChild(downloadLink);
-            URL.revokeObjectURL(url);
         }, 100);
         return;
     }
@@ -727,22 +720,15 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
         XLSX.utils.book_append_sheet(workbook, worksheet, `Data ${index + 1}`);
     });
 
-    const excelBuffer = XLSX.write(workbook, { 
+    const excelBase64 = XLSX.write(workbook, { 
         bookType: "xlsx", 
-        type: "array",
+        type: "base64", 
         cellStyles: true, 
         bookSST: false 
     });
 
-    // 2. MIME type disederhanakan tanpa charset (Excel kadang bingung dengan parameter charset tambahan pada file ZIP/XLSX)
-    const dataBlob = new Blob([excelBuffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    });
-
     const downloadLink = document.createElement("a");
-    const url = URL.createObjectURL(dataBlob);
-    
-    downloadLink.href = url;
+    downloadLink.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + excelBase64;
     downloadLink.download = fileName;
     
     document.body.appendChild(downloadLink);
@@ -750,6 +736,5 @@ export const generateExcelReport = (tableData, contextTitle = "Data Ekspor", tot
     
     setTimeout(() => {
         document.body.removeChild(downloadLink);
-        URL.revokeObjectURL(url);
     }, 100);
 };
