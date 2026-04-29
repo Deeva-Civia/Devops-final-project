@@ -238,6 +238,14 @@ const StudentProfile = () => {
         setOptions(optionsRes);
         if (studentRes.success) {
           const studentData = studentRes.data;
+          let cleanPhotoUrl = studentData.studentInfo?.photo_url;
+          if (cleanPhotoUrl && !cleanPhotoUrl.startsWith('http')) {
+            const apiBase = process.env.REACT_APP_API_URL.replace(/\/$/, '');
+            const cleanPath = cleanPhotoUrl.replace(/^.*?(storage\/|public\/)/, '');
+            cleanPhotoUrl = `${apiBase}/storage-file/${cleanPath}`;
+          } else if (cleanPhotoUrl) {
+            cleanPhotoUrl = cleanPhotoUrl.replace(/\/storage-file\/(?:backend\/storage\/|storage\/|public\/)+/g, '/storage-file/');
+          }
           const combinedData = {
             student_id: studentData.student_id,
             ...studentData.studentInfo,
@@ -245,13 +253,14 @@ const StudentProfile = () => {
             ...studentData.facilities,
             ...studentData.parentGuardian,
             ...studentData.termOfPayment,
-            photo_url: studentData.studentInfo?.photo_url,
+            photo_url: cleanPhotoUrl,
           };
           setStudentData(studentData);
           setProfileData(combinedData);
           setFormData(combinedData);
           const studentInfoData = {
             ...(studentData.studentInfo || {}),
+            photo_url: cleanPhotoUrl,
             va_mandiri:
               studentData.termOfPayment?.va_mandiri ||
               studentData.studentInfo?.va_mandiri,
