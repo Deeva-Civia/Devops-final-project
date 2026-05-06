@@ -36,7 +36,7 @@ class RegistrationTest extends TestCase
                 ->assertJsonStructure(['data' => ['draft_id']]);
         
         $this->assertDatabaseHas('drafts', [
-            'user_id' => $user->id,
+            'user_id' => $user->user_id,
             'school_year_id' => $schoolYear->school_year_id
         ]);
     }
