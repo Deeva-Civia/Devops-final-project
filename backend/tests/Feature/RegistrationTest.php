@@ -18,7 +18,7 @@ class RegistrationTest extends TestCase
         $schoolYear = SchoolYear::create(['year' => '2025/2026']);
         $semester = Semester::create([
             'number' => 1, 
-            'name' => 'Ganjil', 
+            'name' => 'One', 
             'school_year_id' => $schoolYear->id
         ]);
 
