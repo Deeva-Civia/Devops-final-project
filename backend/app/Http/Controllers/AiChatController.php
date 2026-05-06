@@ -145,7 +145,8 @@ class AiChatController extends Controller
     
                     // Query menggunakan READ-ONLY
                     try {
-                        $results = DB::connection('mysql_readonly')->select($sql);
+                        $connection = env('DB_AI_CONNECTION', 'mysql');
+                        $results = DB::connection($connection)->select($sql);
     
                         $resultsArray = array_map(function ($value) {
                             return (array) $value;

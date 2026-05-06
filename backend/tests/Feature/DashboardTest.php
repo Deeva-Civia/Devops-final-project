@@ -2,26 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\SchoolYear;
 use App\Models\ApplicationForm;
 use App\Models\CancelledRegistration;
 use App\Models\Enrollment; 
-use Illuminate\Support\Facades\DB; 
+use App\Models\SchoolYear;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB; 
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_verify_dashboard_logic_against_real_database()
     {
         $simulationDate = '2026-11-20 10:00:00'; 
         Carbon::setTestNow($simulationDate);
 
-        $user = User::first(); 
-        if (!$user) {
-            $this->markTestSkipped('Tidak ada user di database real.');
-        }
+        $user = User::factory()->create(['role' => 'admin']); 
 
         $response = $this->actingAs($user)->getJson('/api/dashboard');
         $response->assertStatus(200);
@@ -145,5 +145,18 @@ class DashboardTest extends TestCase
 
             $this->assertEquals($manualActiveCounts, $apiData['active_students_by_section'], 'Active Students by Section mismatch');
         }
+    }
+
+    public function test_dashboard_page_is_accessible_to_authenticated_users()
+    {
+        $user = User::factory()->create();
+
+        // Mencoba akses tanpa login (harus redirect/unauthorized)
+        $this->getJson('/api/me')->assertStatus(401);
+
+        // Akses setelah login
+        $response = $this->actingAs($user)->getJson('/api/me');
+
+        $response->assertStatus(200);
     }
 }

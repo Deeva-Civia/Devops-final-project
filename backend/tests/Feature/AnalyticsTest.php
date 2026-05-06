@@ -19,6 +19,11 @@ class AnalyticsTest extends TestCase
         parent::setUp();
 
         // 1. SETUP USER ADMIN
+        $this->user = User::factory()->create([
+            'role' => 'admin',
+            'email' => 'admin@mis-mdo.sch.id'
+        ]);
+        
         $this->user = User::where('role', 'admin')->first(); 
 
         if (!$this->user) {
