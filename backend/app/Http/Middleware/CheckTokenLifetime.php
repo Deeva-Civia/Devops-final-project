@@ -11,7 +11,9 @@ class CheckTokenLifetime
     public function handle(Request $request, Closure $next)
     {
         $token = $request->user()?->currentAccessToken();
-
+        if ($token instanceof \Laravel\Sanctum\TransientToken) {
+            return $next($request);
+        }
         if ($token) {
             $lifetimeMinutes = 720; 
 

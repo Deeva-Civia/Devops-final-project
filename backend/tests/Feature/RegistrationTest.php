@@ -16,7 +16,11 @@ class RegistrationTest extends TestCase
     {
         $user = User::factory()->create();
         $schoolYear = SchoolYear::create(['year' => '2025/2026']);
-        $semester = Semester::create(['number' => 1, 'school_year_id' => $schoolYear->id]);
+        $semester = Semester::create([
+            'number' => 1, 
+            'name' => 'Ganjil', 
+            'school_year_id' => $schoolYear->id
+        ]);
 
         $this->actingAs($user);
 
