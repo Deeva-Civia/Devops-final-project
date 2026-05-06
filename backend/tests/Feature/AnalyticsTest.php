@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\SchoolYear;
 use App\Models\ApplicationForm;
+use App\Models\SchoolYear;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
 class AnalyticsTest extends TestCase
 {
-    // Tidak menggunakan RefreshDatabase karena kita menggunakan data existing
-    
+    use RefreshDatabase; 
     protected $user;
 
     protected function setUp(): void
@@ -23,7 +23,7 @@ class AnalyticsTest extends TestCase
             'role' => 'admin',
             'email' => 'admin@mis-mdo.sch.id'
         ]);
-        
+
         $this->user = User::where('role', 'admin')->first(); 
 
         if (!$this->user) {
