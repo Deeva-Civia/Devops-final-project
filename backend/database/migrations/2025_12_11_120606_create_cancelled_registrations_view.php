@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,10 +12,7 @@ return new class extends Migration
      */
     public function up()
     {
-        // Kita masukkan query SQL mentah Anda di sini
-        DB::statement("
-            CREATE OR REPLACE VIEW view_cancelled_registrations AS
-            
+        $query = "            
             SELECT 
                 student_status,
                 full_name,
@@ -50,7 +48,16 @@ return new class extends Migration
             LEFT JOIN sections sec ON e.section_id = sec.section_id
             WHERE af.status = 'Cancelled'
             AND e.student_status = 'Old'
-        ");
+        ";
+
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            // Untuk testing (SQLite)
+            DB::statement("DROP VIEW IF EXISTS view_cancelled_registrations");
+            DB::statement("CREATE VIEW view_cancelled_registrations AS " . $query);
+        } else {
+            // Untuk production (MySQL)
+            DB::statement("CREATE OR REPLACE VIEW view_cancelled_registrations AS " . $query);
+        }
     }
 
     /**
