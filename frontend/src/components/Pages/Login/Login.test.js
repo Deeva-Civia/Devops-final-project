@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import LoginPage from '../../src/components/Pages/Login/LoginPage';
+import LoginPage from './LoginPage';
 
 test('renders login page correctly with real component', () => {
     // Render LoginPage asli yang dibungkus dengan MemoryRouter (Router khusus testing)
