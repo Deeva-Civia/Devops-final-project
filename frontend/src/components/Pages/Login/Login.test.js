@@ -3,8 +3,12 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import LoginPage from './LoginPage';
 
+jest.mock('react-router-dom', () => ({
+    MemoryRouter: ({ children }) => <div>{children}</div>,
+    useNavigate: () => jest.fn()
+}), { virtual: true });
+
 test('renders login page correctly with real component', () => {
-    // Render LoginPage asli yang dibungkus dengan MemoryRouter (Router khusus testing)
     render(
         <MemoryRouter>
             <LoginPage />
