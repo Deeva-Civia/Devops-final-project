@@ -130,7 +130,7 @@ const LoginPage = () => {
               className={styles["login-form-new"]}
             >
               <h2 className={styles["login-title-new"]}>
-                {isResetMode ? "Reset your login" : "Login to your account"}
+                {isResetMode ? "Reset your login" : "Deeva"}
               </h2>
 
               {error && (
